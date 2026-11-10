@@ -1,0 +1,46 @@
+ds-button {
+    &::part(base) {
+        --icon-size: 23px;
+        --icon-color: var(--purple);
+        --btn-bg-color: var(--white);
+        --btn-border-color: var(--white);
+        --default-size-sm: 32px;
+        --btn-radius: 4px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    span,
+    ds-icon[icon="spinner"] {
+        display: none;
+    }
+
+    &.is--loading,
+    &[loading] {
+        &::part(base) {
+            position: relative;
+            --btn-disabled: var(--white);
+            --btn-padding: 8px 0 8px 8px;
+            background-color: var(--white);
+            border-color: var(--white);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        span {
+            display: block;
+            padding: 0 8px 0 5px;
+        }
+
+        ds-icon[icon="spinner"] {
+            position: relative;
+            top: -2px;
+            display: flex;
+        }
+
+        ds-icon[icon="print"],
+        ds-icon[icon="download"],
+        ds-icon[icon="mail-o"] {
+            display: none;
+        }
+    }
+}

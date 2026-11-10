@@ -1,0 +1,25 @@
+<div class="popup-container">
+  <div class="d-flex align-items-center justify-content-end" mat-dialog-title>
+    <h3 class="mb-0 font-16 fw-medium">  {{i18n.translate('confirmation')}}</h3>
+    <ds-button (click)="close()" icon>
+      <ds-icon icon="close" class="fs-20 fc-black"></ds-icon>
+    </ds-button>
+  </div>
+  <mat-dialog-content>
+
+    <h2 class="fs-16 fw-medium fc-black mb-3 mt-3">
+      {{i18n.translate('AreYouSureYouWantTakeActon') + (this.language == 'en'?' ':'') + this.actionName + i18n.translate('questionMark')}}
+    </h2>
+
+
+
+  </mat-dialog-content>
+  <mat-dialog-actions class="default-footer justify-content-end gap-3">
+    <ds-button  (click)="confirm()">{{ i18n.translate('CloseConsultationRequest')  }}
+    </ds-button>
+    <ds-button shape="outline" (click)="close()" color="red">{{  i18n.translate('ContinueRequestingConsultation')}}
+    </ds-button>
+
+  </mat-dialog-actions>
+
+</div>

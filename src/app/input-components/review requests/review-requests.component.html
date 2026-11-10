@@ -1,0 +1,94 @@
+<div class="popup-container">
+  <div class="d-flex align-items-center justify-content-end" mat-dialog-title>
+    <h3 class="mb-0 font-16 fw-medium">{{ i18n.translate('Raisereviewrequests') }}</h3>
+    <ds-button (click)="close()" icon>
+      <ds-icon icon="close" class="fs-20 fc-black"></ds-icon>
+    </ds-button>
+  </div>
+  <mat-dialog-content>
+
+    <ds-alert class="my-3" type="danger" icon="close-circle" *ngIf="errorMessages?.length">
+      <div class="d-flex gap-2" *ngFor="let message of errorMessages">
+        {{ message }}
+      </div>
+    </ds-alert>
+
+
+    <div class="px-md-4 mt-3">
+
+      <app-search-employee
+        class="section-item"
+        [section]="section"
+        [field]="section.body.details.employeeReview"
+        name="approverList"
+        [labelTextReadMode]="i18n.translate('employeeReview')"
+        [labelTextWriteMode]="i18n.translate('employeeReview')"
+        [hasColumnBreak]="false"
+        [label]="i18n.translate('approverList')"
+        [required]="true"
+        [isReadOnly]="section?.header?.readOnly"
+        (emitedValue)="handleEmitValue($event,'employeeReview')">
+      </app-search-employee>
+
+      <!-- <app-textarea
+        class="section-item"
+        [section]="section"
+        [field]="comments"
+        name="comment"
+        [labelTextReadMode]="i18n.translate('comment')"
+        [labelTextWriteMode]="i18n.translate('comment')"
+        [hasColumnBreak]="false"
+        [label]="i18n.translate('comment')"
+        [required]="true"
+        [minLength]="'1'"
+        [maxLength]="'200'"
+        [isReadOnly]="section?.header?.readOnly"
+        (emitedValue)="handleEmitValue($event,'rowcomment')"
+        [errorMessage]="i18n.translate('lenghtMin1Max200')">
+      </app-textarea> -->
+
+      <div class="mat-form-field-wrapper">
+        <div class="d-flex justify-content-between mb-1">
+          <span class="form-label mb-0">{{ i18n.translate('comment') }}</span>
+        </div>
+
+        <!-- <editor
+        id="editor"
+        class="section-item  mt-2"
+        [section]="section"
+        name="comment"
+        [disabled]="section?.header?.readOnly"
+        [(ngModel)]="StateMachineService.dataModel"
+        class="full"
+        [init]="init"></editor>-->
+
+
+
+        <editor id="editor" [(ngModel)]="StateMachineService.reviewDataModel" class="full" [init]="init"></editor>
+
+      </div> 
+
+
+
+
+      <app-file-uploader class="section-item full" name="file" [attachments]="attachments"
+                         [labelTextReadMode]="i18n.translate('attachments')" [labelTextWriteMode]="i18n.translate('attachments')"
+                         [hasColumnBreak]="false" [label]="i18n.translate('attachments')" [required]="false" [multiple]="true"
+                         [isReadOnly]="section?.header?.readOnly" [showActions]="true"
+                         (uploadingStatus)="handleUploading($event)"
+                         (emitedValue)="handleEmitValue($event,'attachment')"
+      >
+      </app-file-uploader>
+
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="default-footer justify-content-end gap-3">
+    <ds-button shape="outline" (click)="close()" [disabled]="(profileRequestorService.isSubmitting['ask'])" color="red">{{ i18n.translate('cancel') }}
+    </ds-button>
+    <ds-button [ngClass]="{'disabled':(!validcreateSubRequest() || profileRequestorService.isSubmitting['ask']   || this.uploading ) }"
+               [loading]="profileRequestorService.isSubmitting['ask']"
+               (click)="createSubRequest()">{{ i18n.translate('sendForReview') }}
+    </ds-button>
+  </mat-dialog-actions>
+
+</div>

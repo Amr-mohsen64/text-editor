@@ -1,0 +1,186 @@
+::ng-deep {
+  .add-attachment-dialog {
+    --popup-max-width: 500px;
+    --popup-width: 100%;
+  }
+
+  .view-note-popover{
+    max-width: 250px;
+    max-height: 300px;
+    overflow: auto;
+    --popover-bc: var(--black);
+    color: var(--white);
+    --popover-before-width: 0.6rem;
+  }
+    .mat-tooltip {
+    max-width: 500px;
+    background: #1d252d;
+  }
+}
+
+
+
+:host {
+  ::ng-deep {
+
+    .table-responsive table {
+      --th-bg: var(--white);
+      --th-fc: var(--dark-gray);
+    }
+    .white-attached ds-attachments::part(base) {
+      --file-bg: transparent;
+    }
+
+    .full-add-btn::part(base){
+      --btn-min-width: 100%;
+      --btn-bg-color: var(--light-gray);
+      --btn-height: 70px;
+      --btn-radius: 6px;
+      border: 1px dashed var(--dark-gray);
+    }
+  }
+}
+
+
+.file-uploader{
+
+  --uploader-height: 150px;
+  --uploader-width: 100%;
+  --uploader-bg: var(--off-white);
+  --uploader-border: 1px dashed var(--dark-gray);
+  --uploader-radius: var(--box-radius);
+  --uploader-padding: 1rem;
+
+  height: var(--uploader-height);
+  background-color: var(--uploader-bg);
+  border: var(--uploader-border);
+  border-radius: var(--uploader-radius);
+  padding: var(--uploader-padding);
+  text-align: center;
+  cursor: pointer;
+
+}
+
+.insideTableWidth{
+  width: 250px !important;
+}
+
+.file-uploader-table{
+  --uploader-height: 45PX;
+    --uploader-width: 100%;
+    --uploader-bg: var(--off-white);
+    --uploader-border: 1px dashed var(--dark-gray);
+    --uploader-radius: var(--box-radius);
+    --uploader-padding: 0 1rem;
+    height: var(--uploader-height);
+    background-color: var(--uploader-bg);
+    border: var(--uploader-border);
+    border-radius: var(--uploader-radius);
+    padding: var(--uploader-padding);
+    text-align: center;
+    cursor: pointer;
+    DISPLAY: FLEX;
+    ALIGN-ITEMS: CENTER;
+    JUSTIFY-CONTENT: CENTER;
+}
+
+
+.file-uploader-table-dev{
+  DISPLAY: FLEX;
+  ALIGN-ITEMS: CENTER;
+   GAP: 1REM;
+}
+.file-uploader-table-svg{
+  width: 70%;
+}
+.insideTableStyle{
+  width: 272px;
+}
+.files-list{
+  --file-item-width: 300px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--file-item-width));
+  grid-gap: .5rem;
+  @media (max-width: 768px){
+    grid-template-columns: repeat(auto-fill, minmax(var(--file-item-width), 1fr));
+  }
+  .file-item-container{
+
+    .uploaded-file-actions {
+      margin-inline-start: 20px;
+
+      .button__wrapper {
+        font-size: 15px;
+      }
+    }
+
+    .file-item{
+      --file-bg: var(--off-white);
+      --file-radius: var(--box-radius);
+      --icon-color: var(--purple);
+      --icon-size: 2rem;
+      --file-border: transparent;
+
+      display: flex;
+      align-items: center;
+      background-color: var(--file-bg);
+      border: 1px solid var(--file-border);
+      border-radius: var(--file-radius);
+      padding: 0 1rem;
+      height: 70px;
+      gap: .75rem;
+
+      &.error{
+        --file-bg: rgba(var(--rgb-red), 10%);
+        --file-border: var(--red);
+        --icon-color: var(--red);
+      }
+
+      .icon{
+        color: var(--icon-color);
+        font-size: var(--icon-size);
+      }
+      .file-action{
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+      }
+    }
+  }
+}
+
+ds-attachments::part(base){
+  --file-width: 250px;
+}
+
+.file-item-container-actions {
+  display: flex;
+  align-items: center;
+
+  .uploaded-file-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-inline-start: 25px;
+
+    .button__wrapper {
+      font-size: 15px;
+    }
+  }
+}
+
+::ng-deep {
+  .file-item .name-size {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 120px;
+  }
+}
+.w-25 {
+  width:25% !important
+}

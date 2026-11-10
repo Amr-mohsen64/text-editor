@@ -1,0 +1,272 @@
+:root {
+  --primary-color: #4f008c;
+}
+
+table tr:first-child {
+  background: var(--primary-color);
+  color: white;
+
+  .editor-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+}
+
+table td {
+  border: 1px solid #bbb !important
+}
+
+* {
+  font-family: "STC_Forward" !important;
+}
+
+body#tinymce {
+  padding: 10px !important;
+  font-family: 'STC_Forward', sans-serif !important;
+  letter-spacing: normal;
+}
+
+@font-face {
+  font-family: 'STC_Forward', sans-serif !important;
+  src: url("../../fonts/STCForward-Regular.eot");
+  src: url("../../fonts/STCForward-Regular.eot?#iefix") format("embedded-opentype"),
+    url("../../fonts/STCForward-Regular.woff") format("woff"), url("../../fonts/STCForward-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+.mce-item-anchor {
+  display: none !important;
+}
+
+.mce-content-body .mce-item-anchor:empty {
+  display: none !important;
+}
+
+/* =============== # Reset tags ============*/
+ul li p,
+ul li h1,
+ul li h2,
+ul li h3,
+ul li h4,
+ul li h5,
+ul li h6,
+ol li p,
+ol li h1,
+ol li h2,
+ol li h3,
+ol li h4,
+ol li h5,
+ol li h6 {
+  margin: 0;
+  display: inline-block;
+}
+
+/* =============== # default OL style ============*/
+ol {
+  list-style-position: inside;
+  padding-inline-start: 20px;
+  font-family: 'STC_Forward', sans-serif !important;
+}
+
+ol>li {
+  margin-top: 4px;
+  font-family: 'STC_Forward', sans-serif !important;
+}
+
+ol>li::marker {
+  content: counters(list-item, ".") ". ";
+}
+
+[dir="rtl"] ol>li::marker {
+  content: counters(list-item, ".", decimal) ". ";
+  /*  unicode-bidi: isolate-override; */
+}
+
+ol[style*="list-style-type: lower-alpha;"]>li::marker,
+ol[style*="list-style-type: upper-alpha;"]>li::marker,
+ol[style*="list-style-type: upper-roman;"]>li::marker,
+ol[style*="list-style-type: lower-roman;"]>li::marker,
+ol[style*="list-style-type: lower-greek;"]>li::marker {
+  content: unset !important;
+}
+
+ol>li[style*="list-style: none;"]::marker {
+  content: unset;
+}
+
+/* =============== # custom OL Arabic letters ============*/
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"],
+[dir="rtl"] ol[style*="list-style-type:upper-alpha;"] {
+  list-style: none;
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li {
+  display: block;
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li::before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li::before {
+  display: inline-block;
+  width: 1.5em;
+  margin-right: -1.5em;
+  margin-left: 0.5em;
+  text-align: center;
+  direction: ltr;
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(1):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(1):before {
+  content: ".أ";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(2):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(2):before {
+  content: ".ب";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(3):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(3):before {
+  content: ".ج";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(4):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(4):before {
+  content: ".د";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(5):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(5):before {
+  content: ".هـ";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(6):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(6):before {
+  content: ".و";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(7):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(7):before {
+  content: ".ز";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(8):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(8):before {
+  content: ".ح";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(9):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(9):before {
+  content: ".ط";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(10):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(10):before {
+  content: ".ى";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(11):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(11):before {
+  content: ".ك";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(12):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(12):before {
+  content: ".ل";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(13):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(13):before {
+  content: ".م";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(14):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(14):before {
+  content: ".ن";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(15):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(15):before {
+  content: ".س";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(16):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(16):before {
+  content: ".ع";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(17):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(17):before {
+  content: ".ف";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(18):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(18):before {
+  content: ".ص";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(19):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(19):before {
+  content: ".ق";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(20):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(20):before {
+  content: ".ر";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(21):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(21):before {
+  content: ".ش";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(22):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(22):before {
+  content: ".ت";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(23):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(23):before {
+  content: ".ث";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(24):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(24):before {
+  content: ".خ";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(25):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(25):before {
+  content: ".ذ";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(26):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(26):before {
+  content: ".ض";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(27):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(27):before {
+  content: ".ظ";
+}
+
+[dir="rtl"] ol[style*="list-style-type: lower-alpha;"]>li:nth-child(28):before,
+[dir="rtl"] ol[style*="list-style-type: upper-alpha;"]>li:nth-child(28):before {
+  content: ".غ";
+}
+
+/* ================== Misc Styles =========== */
+.editor-var,
+.has_anchor::marker {
+  color: #ff375e;
+  outline: 0;
+}
+
+.tox .tox-button {
+  display: none !important;
+}
+
+.disabled-element {
+  opacity: 0.5 !important;
+  pointer-events: none !important;
+}

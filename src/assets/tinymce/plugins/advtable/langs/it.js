@@ -1,0 +1,27 @@
+/*!
+ * TinyMCE Language Pack
+ *
+ * Copyright (c) 2023 Ephox Corporation DBA Tiny Technologies, Inc.
+ * Licensed under the Tiny commercial license. See https://www.tiny.cloud/legal/
+ */
+tinymce.addI18n("it", {
+  "Advanced sort...": "Ordinamento avanzato...",
+  "Advanced Sort": "Ordinamento avanzato",
+  "Sort table by column ascending": "Ordina tabella per colonna ascendente",
+  "Sort table by column descending": "Ordina tabella per colonna discendente",
+  "Sort": "Ordina",
+  "Order": "Ordinamento",
+  "Sort by": "Ordina per",
+  "Ascending": "Ascendente",
+  "Descending": "Discendente",
+  "Selection": "Selezione",
+  "Table": "Tabella",
+  "Column": "Colonna",
+  "Row": "Riga",
+  "Column {0}": "Colonna {0}",
+  "Row {0}": "Riga {0}",
+  "Row numbering": "Numerazione righe",
+  "None": "Nessuno",
+  "Numeric": "Numerico",
+  "Alpha": "Alfabetico"
+});

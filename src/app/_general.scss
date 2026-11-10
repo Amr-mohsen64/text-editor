@@ -1,0 +1,342 @@
+html, body{
+  &.NoScroll {
+      overflow: hidden;
+  }
+}
+
+.requests-number {
+  min-width: 25px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: var(--purple);
+  color: var(--white);
+  line-height: 28px;
+  text-align: center;
+}
+
+
+// .table-responsive table thead tr th {
+//   color: var(--th-fc) !important;
+//   background-color: var(--th-bg) !important;
+// }
+
+
+.icon-btn-shadow::part(base) {
+  --btn-bg-color: var(--white);
+  --btn-border-color: var(--white);
+  --btn-shadow: 0 2px 7px rgba(var(--rgb-black), 0.07);
+}
+
+
+ds-button.disabled::part(base) {
+  opacity: 50%;
+}
+
+
+ds-avatar {
+  display: inline-flex;
+}
+
+figure {
+  margin: 0;
+}
+
+.border-bottom-dark {
+  border-bottom: 1px solid rgba(var(--rgb-dark-gray), 30%)
+}
+
+.mat-menu-panel {
+  min-height: auto !important;
+  padding-top: 0;
+}
+
+.progress-bar {
+  --progress-width: 275px;
+  width: var(--progress-width);
+
+  @media (max-width: 576px) {
+    --progress-width: 100%;
+  }
+
+  .mat-progress-bar {
+    --progress-height: 20px;
+    --progress-width: 275px;
+    --progress-radius: 3px;
+    --progress-bar-bg: var(--light-gray);
+    --progress-fill-bg: var(--green);
+    --progress-fill-shadow: 0 7px 10px rgba(var(--rgb-green), 20%);
+
+    width: var(--progress-width) !important;
+    height: var(--progress-height) !important;
+    border-radius: var(--progress-radius);
+    overflow: visible !important;
+
+    @media (max-width: 576px) {
+      --progress-width: 100%;
+    }
+
+    &.full-bar {
+      --progress-fill-bg: var(--red);
+      --progress-fill-shadow: 0 7px 10px rgba(var(--rgb-red), 20%);
+    }
+
+
+    .mat-progress-bar-background {
+      width: 100% !important;
+      display: none;
+    }
+
+    .mat-progress-bar-buffer {
+      background: var(--progress-bar-bg);
+      border-radius: var(--progress-radius);
+    }
+
+    .mat-progress-bar-fill {
+      border-radius: var(--progress-radius);
+      overflow: hidden;
+      box-shadow: var(--progress-fill-shadow);
+
+      &::after {
+        background-color: var(--progress-fill-bg);
+      }
+    }
+
+  }
+}
+
+
+.header-line {
+  margin-top: 10px;
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: .75rem;
+
+  &:after {
+    content: '';
+    height: 1px;
+    width: 100%;
+    background-color: var(--gray);
+  }
+}
+
+.mat-checkbox .mat-checkbox-layout {
+  align-items: flex-start !important;
+
+  .mat-checkbox-label {
+    white-space: normal;
+  }
+}
+
+.delegate-info-popup {
+  max-width: 320px;
+  --box-shadow: 0 7px 10px 0 rgba(var(--rgb-black), 3%);
+}
+
+
+#outlookApp .service-wrapper {
+  padding: 1.5rem !important;
+}
+
+
+@media (max-width: 767.98px) {
+
+  .info-section > .info-item > .name,
+  .info-section > .section-item > .name {
+    margin-bottom: 0;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  body form.ng-untouched.ng-pristine {
+    padding: 0 !important;
+  }
+}
+
+.hup-main-wrapper #main-content .STC-container {
+  padding: 0;
+}
+
+input.focus,
+textarea.focus {
+  background: transparent;
+}
+
+button,
+input,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover,
+button:hover,
+button:focus {
+  background: inherit;
+  border-color: inherit;
+  color: inherit;
+  text-shadow: none;
+  font-weight: inherit;
+}
+
+.mat-form-content {
+
+  .mat-date-range-input-start-wrapper,
+  .mat-date-range-input-end-wrapper {
+    max-width: none;
+    flex-grow: initial;
+    display: flex;
+    align-items: center;
+  }
+
+  .mat-date-range-input-inner {
+    width: auto;
+    padding: 0;
+    border: 0;
+    background-image: none;
+    font-family: inherit;
+    [lang="ar"] &,
+    [lang="ar-SA"] & {
+      width: -webkit-fill-available;
+    }
+  }
+}
+
+.appListActive {
+  #itemsNavigationSpan {
+    .appIcon {
+      min-width: 20px;
+    }
+  }
+}
+
+
+#outlookItemsView {
+
+  .hubInbox_SearchContainer {
+    .stc-custom-tag-search {
+      display: flex;
+
+      .closeSearchPanel {
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+      }
+    }
+  }
+
+  hr {
+    background-color: var(--gray) !important;
+  }
+
+  .mat-drawer-container {
+    .mat-drawer-backdrop {
+      z-index: 801 !important;
+    }
+
+    .mat-drawer {
+      z-index: 803 !important;
+    }
+  }
+
+  .filertHeader {
+    .dropdown.px-5 {
+      padding-right: 5px !important;
+      padding-left: 5px !important;
+    }
+
+    .mb-5 {
+      margin-bottom: 5px !important;
+    }
+  }
+
+}
+
+.mat-error {
+  line-height: 1.1rem
+}
+
+body,
+.main-sidenav,
+.main-popup {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)
+}
+
+
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+// Layout & components
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+// Helpers
+@import "bootstrap/scss/helpers";
+
+// Utilities
+@import "bootstrap/scss/utilities/api";
+// scss-docs-end import-stack
+
+
+//@import "bootstrap";
+// @import "basic-ui-components/dist/assets/scss/_bootstrap";
+@import "basic-ui-components/dist/assets/scss/base";
+
+@import "syncfusion/material";
+
+
+@import '@angular/material/theming';
+$custom-typography: mat-typography-config($font-family: "STC_Forward"
+);
+
+@include mat-core($custom-typography);
+
+// .mat-paginator-page-size
+.mat-paginator {
+  .mat-paginator-outer-container {
+    .mat-paginator-container {
+      .mat-paginator-page-size {
+        align-items: center !important;
+
+        mat-form-field {
+          .mat-form-field-wrapper {
+            padding-bottom: 0 !important;
+            // .mat-form-field-type-mat-select{
+            width: 80px;
+            height: 30px;
+
+            .mat-form-field-flex {
+              height: 30px !important;
+
+              .mat-form-field-infix {
+                height: 100% !important;
+                min-height: auto !important;
+
+                mat-select {
+                  display: flex;
+                  align-items: center;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// mat-form-field mat-paginator-page-size-select
+
+
+mat-form-field {
+  --placeholder-fc: var(--dark-gray);
+  font-size: var(--input-fs) !important;
+
+  .mat-form-field-subscript-wrapper {
+    font-size: 12px;
+  }
+}

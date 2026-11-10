@@ -1,0 +1,287 @@
+<section [ngClass]="{'main-sidenav':fromSideNav}">
+  <div *ngIf="fromSideNav" class="sidenav-title">
+    <h3>{{ i18n.translate('edit') }}</h3>
+    <!-- <ds-button size="small">View Inbox</ds-button> -->
+    <ds-button *ngIf="fromSideNav" (click)="confirmCancel()" icon>
+      <ds-icon icon="close" class="fs-20 fc-black"></ds-icon>
+    </ds-button>
+  </div>
+  <div class="sidenav-body">
+    <div class="form__container">
+      <div class="form__field form__wrapper">
+        <div class="form__field-item" *ngIf="(!section?.header?.readOnly || coreStateMachine.canEditForm)">
+          <div
+            [ngClass]="{'d-flex flex-column flex-lg-row gap--12':!(section?.header?.readOnly && !coreStateMachine.canEditForm)}">
+            <div [ngClass]="{'error':!requestTypeValid && !section?.body?.details?.typeOfRequest.key}">
+              <app-toggle-button class="flex-grow-unset" [placeholder]="i18n.translate('requestType')"
+                [showLabel]="true" [section]="section" [field]="section?.body?.details?.typeOfRequest" name="type"
+                [lov]="lov?.typeOfRequest" [required]="true"
+                [isReadOnly]="section?.header?.readOnly && !coreStateMachine.canEditForm"
+                (emitedValue)="handleEmitValue($event,'typeOfRequest')" [label]="i18n.translate('requestType')">
+              </app-toggle-button>
+              <!-- <div *ngIf="!requestTypeValid && !section?.body?.details?.typeOfRequest.key" class="fc-red fs-12 mt-1">{{i18n.translate('pleaseSelect')  }}  {{i18n.translate('requestType')}}</div> -->
+            </div>
+
+            <div class="row gap-12">
+              <div
+                [ngClass]="{'col': true, 'error':  !section?.body?.details?.otherRequestType, 'd-none': section?.body?.details?.typeOfRequest?.key !== 'OTHER'}">
+                <app-input *ngIf="section?.body?.details?.typeOfRequest?.key === 'OTHER'"
+                  [field]="section?.body?.details?.otherRequestType" [label]="i18n.translate('requestType')"
+                  [section]="section" name="requestTitle" [hasColumnBreak]="false" [required]="true" [hasLabel]="false"
+                  [isReadOnly]="section?.header?.readOnly &&!coreStateMachine.canEditForm"
+                  (emitedValue)="handleEmitValue($event,'otherRequestType')">
+                </app-input>
+                <!-- <div *ngIf="section?.body?.details?.typeOfRequest?.key === 'OTHER' && !otherRequestTypeValid && !section?.body?.details?.otherRequestType"
+                class="fc-red fs-12 mto-1">{{i18n.translate('pleaseEnter')  }}  {{i18n.translate('requestType')}}</div> -->
+              </div>
+              <app-select class="col" [placeholder]="i18n.translate('status')" [showLabel]="true" [section]="section"
+                [field]="section?.body?.details?.requestStatus" name="type" [multiple]="true" [lov]="lov?.requestStatus"
+                [required]="false" [isRequired]="false" [selectAllEnabled]="false"
+                [isReadOnly]="section?.header?.readOnly && !coreStateMachine.canEditForm"
+                (emitedMultiValue)="handleEmitValue($event,'requestStatus')" [label]="i18n.translate('status')">
+              </app-select>
+            </div>
+          </div>
+        </div>
+        <div [ngClass]="{'error':!requestTitleValid && !section?.body?.details?.requestTitle}">
+
+
+          <div class="form__field-item form__field-item--request-title">
+            <app-input *ngIf="!section?.header?.readOnly || coreStateMachine.canEditForm" class="section-item full"
+              [section]="section" [field]="section?.body?.details?.requestTitle" name="requestTitle"
+              [labelTextReadMode]="i18n.translate('requestTitle')" [labelTextWriteMode]="i18n.translate('requestTitle')"
+              [hasColumnBreak]="false" [label]="i18n.translate('requestTitle')" [required]="true" [minLength]="'25'"
+              [maxLength]="'100'" [errorMessage]="i18n.translate('lenghtMin25')"
+              [isReadOnly]="section?.header?.readOnly && !coreStateMachine.canEditForm"
+              (emitedValue)="handleEmitValue($event,'requestTitle')">
+              <!--            [hint]="i18n.translate('enterLenghtMin25')"-->
+            </app-input>
+            <!-- <div *ngIf="!requestTitleValid && !section?.body?.details?.requestTitle" class="fc-red fs-12 mto-1">{{i18n.translate('pleaseEnter') }}  {{i18n.translate('requestTitle')}}</div> -->
+          </div>
+        </div>
+        <div class="form__field-item">
+          <!-- <div *ngIf=" this.contentLenth > 0 && this.contentLenth < 400 && isSubmitClicked " class="fc-red fs-12 mt-1">
+          {{i18n.translate('contentMinimum') }}  </div> -->
+
+
+          <div class="form__field" *ngIf="this.contentLength < 400 && (isSubmitClicked) ">
+            <div class="form__field-item">
+              <div class="section-item full mb-3 mt-2">
+                <ds-alert type="danger" icon="close-circle full">
+                  <div class="d-flex gap-2">
+                    {{i18n.translate('contentMinimum') }}
+                  </div>
+                </ds-alert>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="coreStateMachine.canEditForm" class="d-flex justify-content-between mb-1 my-3">
+            <span class="form-label mb-0">{{i18n.translate('content')}}</span>
+            <mat-hint class="d-flex align-items-center gap-1 mt-1">
+              <span [ngClass]="{'fc-coral':this.contentLength< 400 ,'fc-green':this.contentLength >= 400 }"
+                class="fs-12 fc-black line-height-1">{{ this.contentLength }} /{{ i18n.translate('minimum400') }}</span>
+              <span class="sfi sfi-info fs-17 fc-dark-gray" [ngClass]="{'fc-oasis-light-imp':value}"></span>
+            </mat-hint>
+          </div>
+          <div [ngClass]="{'error':  this.contentLength<400  && isSubmitClicked }">
+            <editor id="editor" [disabled]="section?.header?.readOnly && !coreStateMachine.canEditForm "
+              [(ngModel)]="StateMachineService.dataModel" class="full" [init]="init"></editor>
+          </div>
+          <!-- <div *ngIf=" this.contentLenth>0 && this.contentLenth<400 && isSubmitClicked " class="fc-red fs-12 mt-1">{{i18n.translate('pleaseEnter') }}  {{i18n.translate('requestDetails')}}</div> -->
+        </div>
+      </div>
+    </div>
+    <div class="form__container">
+      <h2 class="form__header">
+        {{ i18n.translate('Attachments') }}
+        <span class="form__header-count">{{
+          section?.body?.details?.attachments?.length ?? 0
+          }}</span>
+      </h2>
+
+      <div class="d-flex justify-content-between mb-1">
+        <span class="fs-11 fc-dark-gray"> ( {{i18n.translate('Optional')}}) </span>
+      </div>
+      <drag-drop-file-uploader class="section-item COL-6 " [field]="section?.body?.details?.attachments"
+        [hasLabel]="false" [label]="i18n.translate('Attachments')"
+        [isReadOnly]="section?.header?.readOnly && !coreStateMachine.canEditForm" [required]="false"
+        [isRequired]="false" [attachments]="section?.body?.details?.attachments"
+        (uploadingStatus)="handleUploading($event)" (emitedValue)="handleEmitValue($event,'attachments')">
+      </drag-drop-file-uploader>
+
+    </div>
+
+
+    <!-- <div class="form__container">
+
+      <h2 class="form__header">
+        {{ i18n.translate('approverList') }}
+      </h2>
+
+       <div class="form__field">
+        <div class="form__field-item">
+          <div class="section-item full mb-3 mt-2" >
+            <ds-alert type="warning" icon="close-circle full">
+              <div class="d-flex gap-2">
+                {{ i18n.translate('loggedInUserValidMsg') }}
+              </div>
+            </ds-alert>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+
+    <div #tooltipTemplate class="d-none">
+      <h5 class="d-flex gap-2" dir="auto">
+        {{ i18n.translate('note') }}
+      </h5>
+      <ul dir="auto">
+        <li>{{ i18n.translate('note1') }}</li>
+        <li>{{ i18n.translate('note2') }}</li>
+        <li>{{ i18n.translate('note3') }}</li>
+        <li>{{ i18n.translate('note4') }}</li>
+      </ul>
+    </div>
+
+
+    <div class="form__container">
+
+      <h2 class="form__header">
+
+        {{ i18n.translate('approverList') }}
+        <span class="form__header-count">{{ approverList?.length }}</span>
+
+        <ds-button size="small" icon="true" type="button" [matMenuTriggerFor]="noteMenu" (mouseenter)="openMenu()"
+          (mouseleave)="closeMenu()">
+          <ds-icon icon="info"></ds-icon>
+        </ds-button>
+
+        <mat-menu #noteMenu="matMenu" class="note-popover" [hasBackdrop]="false">
+          <div class="note-content" (click)="$event.stopPropagation()" (mouseenter)="keepMenuOpen()"
+            (mouseleave)="closeMenu()">
+            <h5 class="note-title">
+              {{ i18n.translate('note') }}
+            </h5>
+            <ul class="note-list">
+              <li>{{ i18n.translate('note0') }}</li>
+              <li>{{ i18n.translate('note1') }}</li>
+              <li>{{ i18n.translate('note2') }}</li>
+              <li>{{ i18n.translate('note3') }}</li>
+              <li>{{ i18n.translate('note4') }}</li>
+            </ul>
+          </div>
+        </mat-menu>
+
+      </h2>
+
+      <div class="form__field">
+        <div class="form__field-item">
+
+          <app-search-employee *ngIf="!section?.header?.readOnly" class="section-item full" [section]="section"
+            [field]="searchEmployee" name="approverList" [hasLabel]="false" [label]="i18n.translate('approverList')"
+            [hint]="i18n.translate('approverListHint')" [required]="true" [showEmpNumber]="true"
+            [isReadOnly]="section?.header?.readOnly" (emitedValue)="handleEmitValue($event,'searchEmployee')">
+          </app-search-employee>
+          <div class="text-center"> <span class="large-spinner  sfi sfi-spinner d-inline-block spin fc-coral" matSuffix
+              *ngIf="this.StateMachineService.isApprovalLoading"></span></div>
+
+          <div class="section-item full mb-3 mt-2" *ngIf="isLoggedInUser">
+            <ds-alert type="danger" icon="close-circle full">
+              <div class="d-flex gap-2">
+                {{ i18n.translate('loggedInUserValidMsg') }}
+              </div>
+            </ds-alert>
+          </div>
+          <div class="section-item full mb-3 mt-2" *ngIf="!emailValid">
+            <ds-alert type="danger" icon="close-circle full">
+              <div class="d-flex gap-2">
+                {{ emailValidMsg }}
+              </div>
+            </ds-alert>
+          </div>
+          <div class="section-item full mb-3 mt-2" *ngIf="emailExists">
+            <ds-alert type="danger" icon="close-circle full">
+              <div class="d-flex gap-2">
+                {{ i18n.translate('emailExist') }}
+              </div>
+            </ds-alert>
+          </div>
+        </div>
+        <!-- Approvals List -->
+
+
+        <ul cdkDropList (cdkDropListDropped)="drop($event)" class="approvals__list">
+          <ng-container *ngFor="let emails of approverList; let ind = index;let  last=last">
+            <li class="approvals__list-separator" *ngIf="ind == approverList.length-2 "></li>
+            <!--                [cdkDragDisabled]="(ind == approverList.length-2 || last || fromSideNav)" -->
+            <li cdkDrag [cdkDragDisabled]="(!hasNumber(emails.role) || fromSideNav)" class="approvals__list-item">
+              <div class="item-col col--start cursor-move">
+                <div class="item-drag cursor-move">
+
+                  <svg cdkDragHandle *ngIf="!(!hasNumber(emails.role) || fromSideNav)"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 18">
+                    <path fill="#8E9AA0"
+                      d="M3.84 1.8a1.8 1.8 0 1 1-3.6 0 1.8 1.8 0 0 1 3.6 0Zm0 7.2a1.8 1.8 0 1 1-3.6 0 1.8 1.8 0 0 1 3.6 0Zm0 7.2a1.8 1.8 0 1 1-3.6 0 1.8 1.8 0 0 1 3.6 0Zm7.92-14.4a1.8 1.8 0 1 1-3.601-.001 1.8 1.8 0 0 1 3.601.001Zm0 7.2a1.8 1.8 0 1 1-3.601-.001A1.8 1.8 0 0 1 11.76 9Zm0 7.2a1.8 1.8 0 1 1-3.6 0 1.8 1.8 0 0 1 3.6 0Z" />
+                  </svg>
+                </div>
+                <div class="item-notify bc-light-purple">
+                  {{ ind + 1 }}
+                </div>
+                <div class="item-avatar">
+                  <ds-avatar [image]="getImage(emails?.approver?.personEmail)"
+                    onerror="this.onerror=null;this.src='assets/images/user.svg';" size="medium">
+                  </ds-avatar>
+                  <div>
+                    <strong>{{ (emails?.['approver']?.['personName']) }}</strong>
+                    <p>{{emails?.position?.value || emails?.['approver']?.['position'] }}</p>
+                    <p>
+                      {{ emails?.['approver']?.['personEmail'] }}
+                      <span *ngIf="emails?.['approver']?.['employeeNumber']"></span>
+                      {{ emails?.['approver']?.['employeeNumber'] }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="item-col col--end">
+                <app-select *ngIf="!fromSideNav" [ngClass]="{'mx-5':!(!isNaN(emails.role) && !(isReadOnly) )}"
+                  className="user-info__select no-padding" [hasPlaceHolder]="true"
+                  [placeholder]="i18n.translate('Action')" [showLabel]="false" [section]="section"
+                  [field]="emails?.authority" name="type" [lov]="lov?.authority" [required]="true"
+                  [disabled]="emails.role === 'MEO_GCEO'" [isReadOnly]="section?.header?.readOnly"
+                  (emitedValue)="handleUserInfoEmitValue($event,emails)">
+                </app-select>
+                <ds-status *ngIf="fromSideNav" class="disc mt-2" [status]="'success'">
+                  {{ emails?.authority?.value }}
+                </ds-status>
+                <ds-button *ngIf="(!isNaN(emails.role) && !(isReadOnly) )" (click)="deleteRow(ind)" icon shape="outline"
+                  color="coral">
+                  <ds-icon icon="trash"></ds-icon>
+                </ds-button>
+              </div>
+            </li>
+          </ng-container>
+        </ul>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="fromSideNav" class="sidenav-footer d-flex align-items-center bc-light-gray gap-3">
+    <ds-button class="w-100 full-btn" (click)="onSubmit('saveRequestDetails')" [ngClass]="{'disabled': this.uploading}"
+      [loading]="profileRequestorService.isSubmitting['SUBMIT'] || profileRequestorService.isSubmitting['saveRequestDetails']">
+      <span class="fs-14">{{i18n.translate('save')}}</span>
+    </ds-button>
+    <ds-button class="w-100 full-btn" (click)="askToRestore()"
+      [ngClass]="{'disabled': section.body.details.isFinal =='1' || profileRequestorService.disableButtons || this.uploading}"
+      [loading]="profileRequestorService.isSubmitting['restore'] ">
+      <span class="fs-14">{{i18n.translate('restore')}}</span>
+    </ds-button>
+    <ds-button color="white" [ngClass]="{'disabled':!validForm('SUBMIT') || profileRequestorService.disableButtons }"
+      (click)="closeSidenav()">
+      <span class="fs-14">{{i18n.translate('discard')}}</span>
+    </ds-button>
+  </div>
+</section>

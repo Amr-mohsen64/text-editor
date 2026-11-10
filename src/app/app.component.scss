@@ -1,0 +1,52 @@
+:host{
+  ::ng-deep{
+    .mat-drawer-container{
+      overflow: visible;
+      .mat-drawer-content{
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 60px);
+        overflow: visible;
+
+        .hup-wrapper & {
+          min-height: auto;
+        }
+
+        main{
+          margin-top: 50px;
+          flex-grow: 1;
+          .dockbar-ready.controls-visible &{
+            margin-top: 70px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.mat-drawer-container-has-open, .mat-drawer-container-has-open .mat-drawer {
+  z-index: 99999;
+}
+@media print {
+  /* Define the size and margins for A4 paper */
+  @page {
+    size: A4;
+    margin: 20mm;
+  }
+
+  /* Hide everything except the content to print */
+  body * {
+    visibility: hidden;
+  }
+  
+  #content-to-print, #content-to-print * {
+    visibility: visible;
+  }
+
+  #content-to-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}

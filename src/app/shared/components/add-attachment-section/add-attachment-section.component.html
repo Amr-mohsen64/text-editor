@@ -1,0 +1,46 @@
+<div class="popup-container">
+  <div class="d-flex align-items-center justify-content-end" mat-dialog-title>
+    <h3 class="mb-0 font-16 fw-medium">{{i18n.translate('addAttachments')}}</h3>
+    <ds-button (click)="close()" icon>
+      <ds-icon icon="close" class="fs-20 fc-black"></ds-icon>
+    </ds-button>
+  </div>
+  <mat-dialog-content>
+    <div class="px-md-4 mt-3">
+      <!-- add [callApi]="true"  input mobile issue not able to download it by base 64 -->
+
+      <app-file-uploader class="section-item full" [field]="popupData" name="file" [attachments]="dialogData?.attachments"
+        [labelTextReadMode]="i18n.translate('Attachment')" [labelTextWriteMode]="i18n.translate('Attachment')"
+        [hasColumnBreak]="false" [label]="i18n.translate('Attachment')" [required]="true" [multiple]="dialogData?.multiple" [allowedExtensions]="dialogData?.data"
+        [isReadOnly]="section?.header?.readOnly" [showActions]="false" (emitedValue)="handleAttachmentEmitValue($event)"
+        >
+      </app-file-uploader>
+
+      <app-textarea class="section-item d-block mt-4" [section]="section" [field]="popupData?.fileDescription" name="fileDescription"
+        [labelTextReadMode]="i18n.translate('description')" [labelTextWriteMode]="i18n.translate('description')"
+        [hasColumnBreak]="false" (emitedValue)="handleEmitValue($event,'fileDescription')"
+        [label]="i18n.translate('description')" [required]="dialogData.isRequired" [minLength]='1' [maxLength]='500'
+        [isReadOnly]="section?.header?.readOnly" [errorMessage]="i18n.translate('lenghtMin1Max500')">
+      </app-textarea>
+
+      <app-textarea class="section-item" [section]="section" [field]="popupData?.attachmentcomment" name="attachmentcomment"
+        [labelTextReadMode]="i18n.translate('comments')" [labelTextWriteMode]="i18n.translate('comments')"
+        [hasColumnBreak]="false" (emitedValue)="handleEmitValue($event,'attachmentcomment')" [label]="i18n.translate('comments')"
+        [required]="false" [minLength]='1' [maxLength]='500' [isReadOnly]="section?.header?.readOnly"
+        [errorMessage]="i18n.translate('lenghtMin1Max500')">
+      </app-textarea>
+
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="default-footer justify-content-end gap-3">
+    <ds-button  shape="outline" (click)="close()" [disabled]="(uploading)" color="red">{{i18n.translate('cancel')}}
+    </ds-button>
+    <ds-button (click)="addAttachments()" [loading]="uploading"
+      [disabled]="(!(popupData?.fileContents || popupData?.attachmentId ) ||( dialogData.isRequired && !popupData?.fileDescription )|| uploading)">
+      <span *ngIf="!editMode">{{i18n.translate('add')}}</span>
+      <span *ngIf="editMode">{{i18n.translate('edit')}}</span>
+
+    </ds-button>
+  </mat-dialog-actions>
+
+</div>

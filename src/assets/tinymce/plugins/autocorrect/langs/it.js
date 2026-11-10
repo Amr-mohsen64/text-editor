@@ -1,0 +1,11 @@
+/*!
+ * TinyMCE Language Pack
+ *
+ * Copyright (c) 2022 Ephox Corporation DBA Tiny Technologies, Inc.
+ * Licensed under the Tiny commercial license. See https://www.tiny.cloud/legal/
+ */
+tinymce.addI18n("it", {
+  "Autocorrect": "Correzione automatica",
+  "Auto correct {0}": "Correzione automatica {0}",
+  "Capitalization": "Maiuscole/minuscole"
+});

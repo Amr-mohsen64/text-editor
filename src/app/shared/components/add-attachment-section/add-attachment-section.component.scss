@@ -1,0 +1,12 @@
+::ng-deep{
+    .add-attachment-dialog{
+      --popup-max-width: 500px !important;
+      --popup-width: 100% !important;
+    }
+
+    .default-footer{
+      ds-button::part(base){
+        --btn-min-width: 90px
+      }
+    }
+  }

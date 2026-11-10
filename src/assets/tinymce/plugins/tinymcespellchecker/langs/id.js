@@ -1,0 +1,23 @@
+/*!
+ * TinyMCE Language Pack
+ *
+ * Copyright (c) 2023 Ephox Corporation DBA Tiny Technologies, Inc.
+ * Licensed under the Tiny commercial license. See https://www.tiny.cloud/legal/
+ */
+tinymce.addI18n("id", {
+  "The spelling service was not found: ({0})": "Layanan ejaan tidak ditemukan: ({0})",
+  "Spellcheck": "Periksa ejaan",
+  "Spellcheck...": "Pemeriksaan ejaan...",
+  "Spellcheck language": "Bahasa pemeriksa ejaan",
+  "No misspellings found.": "Tidak ada salah eja.",
+  "Ignore": "Abaikan",
+  "Ignore all": "Abaikan semua",
+  "Misspelled word": "Kata salah eja",
+  "Suggestions": "Usulan",
+  "Accept": "Terima",
+  "Change": "Ubah",
+  "Finding word suggestions": "Cari usulan kata",
+  "Language": "Bahasa",
+  "No suggestions found": "Tidak ada saran yang ditemukan",
+  "No suggestions": "Tidak ada saran"
+});

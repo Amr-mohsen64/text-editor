@@ -1,0 +1,170 @@
+<div class="form" *ngIf="!isReadOnly">
+  <app-editable-request-details [form]="form" [lov]="lov" [isReadOnly]="isReadOnly" [section]="section"
+    (uploadingStatus)="handleUploading($event)" [requestTypeValid]="requestTypeValid"
+    [otherRequestTypeValid]="otherRequestTypeValid" [editorValid]="!StateMachineService.isEmpty"
+    [isSubmitClicked]="isSubmitClicked" [requestTitleValid]="requestTitleValid"></app-editable-request-details>
+  <div class="form__footer">
+    <div class="form__actions">
+      <ui-workspace-approvals-workflow className="remove-label-sm" [form]="form" [section]="form?.sections?.[0]">
+      </ui-workspace-approvals-workflow>
+      <ds-button shape="outline" size="small" (click)="resetForm()">{{ i18n.translate('reset') }}
+      </ds-button>
+      <ng-container *ngFor="let item of lov?.decision?.options">
+        <ds-button [ngClass]="{'disabled': profileRequestorService.disableButtons || this.uploading}"
+          (click)="onSubmit(item?.value) " [loading]="profileRequestorService.isSubmitting[item?.value]"
+          *ngIf="item?.value === 'SUBMIT'">{{ item?.description }}
+        </ds-button>
+
+        <ds-button
+          [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons || this.uploading}"
+          (click)="onSubmit(item?.value)" shape="outline" color="red"
+          [loading]="profileRequestorService.isSubmitting[item?.value]" *ngIf="item?.value === 'CANCEL'">
+          {{ item?.description }}
+        </ds-button>
+
+        <ds-button
+          [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons || this.uploading}"
+          (click)="onSubmit(item?.value) " [loading]="profileRequestorService.isSubmitting[item?.value]"
+          *ngIf="!(item?.value === 'SUBMIT' || item?.value === 'CANCEL')">{{
+          item?.description
+          }}
+        </ds-button>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="isReadOnly">
+  <section class="approval">
+    <div class="approval__body">
+      <div
+        class="approval__tabs d-flex flex-column-reverse flex-lg-row align-items-start align-items-lg-center justify-content-between">
+        <mat-tab-group class="Tabs" animationDuration>
+          <ng-container>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                {{ i18n.translate('requestDetails') }}
+              </ng-template>
+              <ng-template matTabContent>
+                <div class="tab__content">
+                  <div class="tabs__list">
+                    <div class="table-responsive sticky-table">
+                      <table class="table">
+                        <tr>
+                          <th>{{ i18n.translate('requestType') }}</th>
+                          <td>
+                            <div class="d-flex justify-content-between">
+                              <div class="d-flex align-items-center gap-2">
+                                {{ section?.body?.details?.typeOfRequest?.value }}
+                                <span class="mx-5" *ngIf="section?.body?.details?.typeOfRequest?.key =='OTHER'">
+                                  {{ section?.body?.details?.otherRequestType }}
+                                </span>
+                              </div>
+                              <div class="d-flex gap-2">
+                                <ng-container *ngFor="let status of section?.body?.details?.requestStatus">
+                                  <ds-status
+                                    status="{{status?.key == 'VERY_URGENT' ? 'danger' : status?.key == 'URGENT'? 'orange' :  'warning' }}">
+                                    <b>
+                                      {{ status?.value }}
+                                    </b>
+                                  </ds-status>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>{{ i18n.translate('requestTitle') }}</th>
+                          <td>{{ section?.body?.details?.requestTitle }}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  <p class="fs-14 fc-dark-gray my-3 mb-2" (click)="toggleTabContent()">{{
+                    i18n.translate('content')
+                    }} </p>
+                  <div class="tabs__box is--transparent" [class.is--open]="true">
+                    <div class="tabs__box-content">
+                      <editor id="disabledEditor" [disabled]="true" [(ngModel)]="dataModel" class="full" [init]="init">
+                      </editor>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                {{ i18n.translate('Attachments') }} <span class="mx-3 form__header-count">{{
+                  section?.body?.details?.attachments?.length ?? 0 }}</span>
+              </ng-template>
+              <div class="tab__content">
+                <div class="form__container is--transparent">
+                  <!-- <h2 class="form__header">
+                      {{ i18n.translate('Attachments') }}
+                     <span class="mx-3form__header-count">{{ section?.body?.details?.attachments?.length }}</span>
+                   </h2>
+ -->
+                  <drag-drop-file-uploader class="section-item COL-6 " [field]="section?.body?.details?.attachments"
+                    [hasLabel]="false" [label]="i18n.translate('Attachments')" [isReadOnly]="true"
+                    [attachments]="section?.body?.details?.attachments"
+                    (emitedValue)="handleEmitValue($event,'attachments')"></drag-drop-file-uploader>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                {{ i18n.translate('approverList') }} <span class="mx-3 form__header-count">{{ approverList?.length ?? 0
+                  }}</span>
+              </ng-template>
+              <div class="tab__content">
+                <div class="form__container">
+                  <div class="form__field">
+                    <ul class="approvals__list">
+                      <ng-container *ngFor="let emails of approverList; let ind = index;let  last=last">
+                        <li class="approvals__list-item">
+                          <div class="item-col col--start cursor-move">
+                            <div class="item-notify bc-light-purple">
+                              {{ ind + 1 }}
+                            </div>
+                            <div class="item-avatar">
+                              <ds-avatar [image]="getImage(emails?.approver?.personEmail)"
+                                onerror="this.onerror=null;this.src='assets/images/user.svg';"
+                                size="medium"></ds-avatar>
+                              <div>
+                                <strong>{{
+                                  (emails?.['approver']?.['personName'])
+                                  }}</strong>
+                                <p>{{emails?.position?.value}}</p>
+                                <p>
+                                  {{ emails?.['approver']?.['personEmail'] }}
+                                  <span *ngIf="emails?.['approver']?.['employeeNumber']"></span>
+                                  {{
+                                  emails?.['approver']?.['employeeNumber']
+                                  }}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="item-col col--end">
+                            <ds-status class="disc mt-2" [status]="'success'">
+                              {{ emails?.authority?.value }}
+                            </ds-status>
+                          </div>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+          </ng-container>
+        </mat-tab-group>
+        <ds-button shape="text" *ngIf="section.body.details.isEditable =='true'" (click)="editService()"
+          class="button--edit">
+          <ds-icon icon="pen" class="fs-20 px-2 pb-1"></ds-icon>
+          {{ i18n.translate('edit') }}
+        </ds-button>
+      </div>
+    </div>
+  </section>
+</ng-container>

@@ -1,0 +1,511 @@
+<form class="form is--inline">
+
+  <div class="form__field" *ngIf="!section?.['body']?.details?.['subRequestsDeatails'] && !isReadOnly">
+    <div class="form__field-item">
+      <div class="d-flex justify-content-between mb-1">
+        <span class="form-label mb-0">{{ i18n.translate('reviewRequests') }}</span>
+      </div>
+    </div>
+    <div class="reviews is--empty">
+      <ds-message type="general" label="{{i18n.translate('noReviews')}}"></ds-message>
+      <div class="reviews__desc">{{ i18n.translate('reviewRequestsHint') }}</div>
+      <ds-button *ngIf="!isReadOnly" (click)="createSubRequest()" shape="outline">
+        <ds-icon icon="chat-text-o" class="fs-24 px-1"></ds-icon>
+        {{ i18n.translate('askForReview') }}
+      </ds-button>
+    </div>
+  </div>
+
+  <div class="accordions" *ngIf="section?.['body']?.details?.['subRequestsDeatails']">
+    <div class="accordions__container">
+      <div class="accordions__list">
+        <mat-accordion class="no-box-shadow">
+          <mat-expansion-panel hideToggle class="approval__list-item" #item2="matExpansionPanel">
+            <mat-expansion-panel-body>
+              <div class="approval__stage">
+                <div class="approval__stage-header">
+                  <h4 class="fs-20 mb-0">{{ i18n.translate('reviewRequests') }}</h4>
+                  <ds-button *ngIf="!isReadOnly" shape="outline" (click)="createSubRequest()">
+                    <ds-icon icon="chat-text-o" class="fs-24 px-1"></ds-icon>
+                    {{ i18n.translate('askForReview') }}
+                  </ds-button>
+                </div>
+                <div class="approval__stage-list">
+                  <ul class="list__header d-none d-lg-flex">
+                    <li class="list__header-count">{{ i18n.translate('sNo') }}</li>
+                    <li class="list__header-form text-center">{{ i18n.translate('formId') }}</li>
+                    <li class="list__header-status text-center">{{ i18n.translate('status1') }}</li>
+                    <li class="list__header-reviewer text-center">{{ i18n.translate('pendingWith') }}</li>
+                    <!-- <li class="list__header-feedback text-center">Review Feedback</li> -->
+                    <li class="list__header-date text-center">{{ i18n.translate('createdOn') }}</li>
+                    <li class="list__header-date text-center">{{ i18n.translate('feedbackDate') }}</li>
+                    <li class="list__header-actions d-flex justify-content-end"></li>
+                  </ul>
+
+                  <mat-accordion class="mt-2"
+                    *ngFor="let step of section?.['body']?.details?.['subRequestsDeatails']; let ind = index;let last=last;let first = first">
+                    <mat-expansion-panel [expanded]="last" hideToggle class="list__item" #child1="matExpansionPanel">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+
+                          <ul class="list__title">
+                            <li class="list__title-count fs-12 fw-bold">{{ (ind + 1) }}</li>
+                            <li class="list__title-form text-center">
+                              <a (click)="viewForm(step?.['formId']);$event.stopPropagation()">{{ step?.formId }}</a>
+                            </li>
+                            <li class="list__title-status text-center">
+                              <ds-status status="{{getStatus(step?.status?.key)}}" class="fs-12 fw-normal">
+                                {{ step?.['status']?.value }}</ds-status>
+                            </li>
+                            <li class="list__title-reviewer">
+                              <div class="d-flex flex-column align-items-start justify-content-start">
+                                <h3 class="fs-12 fw-medium mb-0">{{ step?.['pendingWith']?.['personName'] }}</h3>
+                                <p class="d-none d-md-block fs-12 fw-normal fc-dark-gray m-0">
+                                  {{ step?.['pendingWith']?.['personEmail'] }}</p>
+                              </div>
+                            </li>
+                            <!-- <li class="list__title-feedback text-center">
+                              <ds-button color="primary" size="medium" icon="true" type="button"
+                                (click)="feedbackReview()" matTooltipPosition="above" matTooltip="Review Feedback">
+                                <ds-icon icon="eye"></ds-icon>
+                              </ds-button>
+                            </li> -->
+                            <li class="list__title-date text-center">
+                              {{ step?.['createdDateTime'] | date :'dd/MM/yyyy HH:mm:ss' }}</li>
+                            <li class="list__title-date text-center">
+                              {{ step?.['finishedDateTime'] | date :'dd/MM/yyyy HH:mm:ss' }} </li>
+                            <li class="list__title-actions d-flex justify-content-end">
+                              <div class="d-inline-flex align-items-center justify-content-end gap-2">
+                                <ds-button color="primary" shape="default" size="small" icon="true" type="button"
+                                  *ngIf="step?.status?.key == 'PENDING'" shape="text" class="button--cancel"
+                                  [loading]="step?.appFullLoader"
+                                  (click)="cancelRequest(step);$event.stopPropagation()">
+                                  <ds-icon icon="close" class="fs-16"></ds-icon>
+                                </ds-button>
+
+                                <ds-button color="primary" shape="default" size="small" icon="true" type="button"
+                                  *ngIf="step?.status?.key == 'PENDING'" shape="text" class="button--cancel"
+                                  [loading]="step?.sendingReminder" [disabled]="step?.sendingReminder"
+                                  (click)="sendReminderDialog(step);$event.stopPropagation()" matTooltipPosition="above"
+                                  matTooltip="{{i18n.translate('sendReminder')}}">
+                                  <ds-icon icon="bell-o" class="fs-16"></ds-icon>
+                                </ds-button>
+
+                                <div class="Toggle pt-2">
+                                  <div class="Toggle__icon custom-toggle"
+                                    [ngClass]="{expanded: child1.expanded,collapsed: !child1.expanded}"></div>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <mat-expansion-panel-body>
+                        <div class="d-flex d-lg-none align-items-center gap-3 pb-3">
+                          <p class="fs-12 p-0 m-0"><a (click)="viewForm(step?.['formId']);$event.stopPropagation()">{{
+                              step?.formId }}</a></p>
+                          <p class="fs-12 p-0 m-0">{{ step?.['createdDateTime'] | date :'dd/MM/yyyy HH:mm:ss' }}</p>
+                        </div>
+                        <ul class="list__content">
+                          <li>
+                            <div class="list__content-title">
+                              <div class="icon is-success">
+                                <ds-icon class="fc-white fs-12" icon="check-1"></ds-icon>
+                              </div>
+                              {{ i18n.translate('Request') }}
+                            </div>
+                            <div class="list__content-info">
+                              <!-- <div class="info-header">
+                                <p class="fs-12 fc-dark-gray">
+                                  <bdi></bdi>
+                                </p>
+                                <ds-status status="purple">{{ i18n.translate('Submitted') }}</ds-status>
+                              </div> -->
+                              <div class="info-content">
+                                <h5>{{ i18n.translate('comment') }}</h5>
+
+                                <editor name="disabledEditor1{{ind}}" id="disabledEditor1{{ind}}" [disabled]="true"
+                                  [(ngModel)]="step.gceoCommentEncoded" class="full" [init]="init"></editor>
+                              </div>
+                              <div class="info-footer" *ngIf="step?.gceoAttachments?.length">
+                                <h5>{{ i18n.translate('Attachments') }}</h5>
+                                <ul class="list">
+                                  <li *ngFor="let file of step?.gceoAttachments">
+                                    <div class="list__img">
+                                      <ds-icon icon="{{file?.mimeType}}" class="fs-30 fs-md-17 fc-purple "></ds-icon>
+                                      <!-- <img src="assets/images/page.png" alt
+                                              draggable="false">-->
+                                    </div>
+                                    <div class="list__data">
+                                      <strong>{{ file?.fileName }}</strong>
+                                      <p>{{ file?.mimeType }}
+                                        <ng-container *ngIf="file?.size">
+                                          | {{ file?.size }}
+                                        </ng-container>
+                                      </p>
+                                    </div>
+                                    <div class="list__actions">
+                                      <ds-button
+                                        *ngIf="(file?.mimeType =='pdf' || file?.mimeType =='png'|| file?.mimeType =='jpeg' || file?.mimeType =='jpg')"
+                                        (click)="downloadFile($event, file, file?.mimeType)" shape="text">
+                                        <ds-icon icon="eye" class="fs-20 fc-dark-gray"></ds-icon>
+                                      </ds-button>
+                                      <ds-button (click)="downloadFile($event, file)" shape="text">
+                                        <ds-icon icon="download" class="fs-20 fc-dark-gray"></ds-icon>
+                                      </ds-button>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="list__content-title">
+                              <div class="icon is-warning" *ngIf="step?.status?.key =='PENDING' ">
+                                <ds-icon class="fs-12" icon="clock"></ds-icon>
+                              </div>
+                              <div class="icon is-success"
+                                *ngIf="step?.status?.key =='ENDORSED' || step?.status?.key =='APPROVE' ">
+                                <ds-icon class="fc-white fs-12" icon="check-1"></ds-icon>
+                              </div>
+                              <div class="icon is-danger"
+                                *ngIf="step?.status?.key =='REJECTED' || step?.status?.key =='CANCELLED' || step?.status?.key =='CANCEL' ">
+                                <ds-icon class="fs-12" icon="close"></ds-icon>
+                              </div>
+                              {{ i18n.translate('mex_raRole') }}
+                            </div>
+                            <div class="list__content-info ">
+                              <div class="info-header">
+                                <p class="fs-12 fc-dark-gray">
+                                  <span class="mt-2">
+                                    {{ i18n.translate('decision') }}:
+                                  </span>
+
+                                  <ds-status
+                                    *ngIf="step?.isEndorsed?.includes('Endorse')  || step?.isEndorsed?.includes('اصادق')  || step?.isEndorsed?.includes('مصادقة')"
+                                    status="{{getStatus(step?.isEndorsed)}}">{{ step?.isEndorsed }}
+                                  </ds-status>
+                                  <ds-status
+                                    *ngIf="!step?.isEndorsed?.includes('Endorse') && !step?.isEndorsed?.includes('اصادق') && !step?.isEndorsed?.includes('مصادقة')"
+                                    [status]="'warning'">
+                                    {{ i18n.translate('notSpecified') }}
+                                  </ds-status>
+                                </p>
+                                <ds-status status="{{getStatus(step?.status?.key)}}">{{ step?.status?.value }}
+                                </ds-status>
+                              </div>
+                              <div class="info-content" *ngIf="step?.['approverFeedBack']">
+
+
+                                <h5 *ngIf="step?.status?.key !=='CANCEL'">{{ i18n.translate('reviewFeedback') }}</h5>
+                                <h5 *ngIf="step?.status?.key =='CANCEL'">{{ i18n.translate('cancellationReason') }}</h5>
+
+                                <div class="tabs__box-content word-break" *ngIf="step?.status?.key =='CANCEL'">
+                                  <span>{{ step?.['approverFeedBack'] }}
+                                  </span>
+                                </div>
+
+                                <editor *ngIf="step?.status?.key !=='CANCEL'" name="disabledEditor{{ind}}"
+                                  id="disabledEditor{{ind}}" [disabled]="true"
+                                  [(ngModel)]="step.approverFeedBackEncoded" class="full" [init]="init"></editor>
+
+                                <div class="info-footer mt-3" *ngIf="step?.approverAttachments?.length">
+                                  <h5>{{ i18n.translate('Attachments') }}</h5>
+                                  <ul class="list">
+                                    <li *ngFor="let file of step?.approverAttachments">
+                                      <div class="list__img">
+                                        <ds-icon icon="{{file?.mimeType}}" class="fs-30 fs-md-17 fc-purple "></ds-icon>
+                                        <!-- <img src="assets/images/page.png" alt
+                                                draggable="false">-->
+                                      </div>
+                                      <div class="list__data">
+                                        <strong>{{ file?.fileName }}</strong>
+                                        <p>{{ file?.mimeType }}
+                                          <ng-container *ngIf="file?.size">
+                                            | {{ file?.size }}
+                                          </ng-container>
+                                        </p>
+                                      </div>
+                                      <div class="list__actions">
+                                        <ds-button
+                                          *ngIf="(file?.mimeType =='pdf' || file?.mimeType =='png'|| file?.mimeType =='jpeg' || file?.mimeType =='jpg')"
+                                          (click)="downloadFile($event, file, file?.mimeType)" shape="text">
+                                          <ds-icon icon="eye" class="fs-20 fc-dark-gray"></ds-icon>
+                                        </ds-button>
+                                        <ds-button (click)="downloadFile($event, file)" shape="text">
+                                          <ds-icon icon="download" class="fs-20 fc-dark-gray"></ds-icon>
+                                        </ds-button>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </mat-expansion-panel-body>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                </div>
+              </div>
+            </mat-expansion-panel-body>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+
+  <!--<div class="table-responsive full" *ngIf="section?.['body']?.details?.['subRequestsDeatails']">
+  <table>
+    <thead>
+    <tr>
+      <th>{{ i18n.translate('sno') }}</th>
+      <th>{{ i18n.translate('formId') }}</th>
+      <th>{{ i18n.translate('status') }}</th>
+      <th>{{ i18n.translate('pendingWith') }}</th>
+      <th>{{ i18n.translate('approverFeedBack') }}</th>
+      <th>{{ i18n.translate('createdDateTime') }}</th>
+      <th>{{ i18n.translate('finishedDateTime') }}</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let element of section?.['body']?.details?.['subRequestsDeatails']">
+
+      <tr>
+        <td>{{ element?.sno }}</td>
+        <td><a (click)="viewForm(element?.['formId']);">{{ element?.formId }}</a></td>
+        <td>
+          <ds-status class="disc" [status]="getStatus(element?.status?.key)">
+            {{ element?.status?.value }}
+          </ds-status>
+        </td>
+        <td>
+          <app-search-employee
+            [field]="element?.['pendingWith']" name="pendingWith"
+            [hasColumnBreak]="true" [required]="true" [isReadOnly]="true" [hasLabel]="false">
+          </app-search-employee>
+        </td>
+        <td class="maxWidth px-2">
+          <a class="fw-medium fc-black underline cursor-pointer fs-12" [hidden]="!element?.approverFeedBack"
+             (click)="$event.stopPropagation();approverFeedBackAnchor.popover.open()" satPopoverAnchor
+             #approverFeedBackAnchor="satPopoverAnchor" [matTooltip]="element?.approverFeedBack">
+            {{ element?.approverFeedBack | slice:0:10 }}....
+          </a>
+          <sat-popover #fileDescriptionPopover [anchor]="fileDescriptionAnchor" [hasBackdrop]="true" [restoreFocus]="false"
+                       verticalAlign="below" horizontalAlign="center">
+            <div class="default-popover p-3 fs-14 text-break view-note-popover">
+              <bdi class="fc-black">
+                {{ element?.approverFeedBack }}
+              </bdi>
+            </div>
+          </sat-popover>
+
+        </td>
+        <td>{{ element?.['createdDateTime'] | date : 'dd/MM/yyyy' }}</td>
+        <td>{{ element?.['finishedDateTime'] | date : 'dd/MM/yyyy' }}</td>
+        <td *ngIf="!section?.header?.readOnly">
+          <ds-button
+            *ngIf="element?.status?.key == 'PENDING'"
+            shape="text" color="red"
+            [disabled]="element?.status?.key !== 'PENDING'"
+            [loading]="element?.appFullLoader"
+            (click)="cancelRequest(element)">
+            <span class="fs-16 fw-medium">{{ i18n.translate('cancelRequest') }}</span>
+          </ds-button>
+        </td>
+      </tr>
+    </ng-container>
+
+    </tbody>
+  </table>
+</div>-->
+
+  <div class="form__field">
+    <div class="form__field-item">
+
+      <drag-drop-file-uploader class="section-item COL-6 " [field]="section?.body?.details?.attachments"
+        [hasLabel]="true" [label]="i18n.translate('Attachments')" [isReadOnly]="section?.header?.readOnly"
+        [required]="false" (uploadingStatus)="handleUploading($event)"
+        [attachments]="section?.body?.details?.attachments" (emitedValue)="handleEmitValue($event,'attachments')">
+      </drag-drop-file-uploader>
+    </div>
+  </div>
+
+  <div class="form__field">
+    <div class="form__field-item mb-0">
+      <app-textarea class="section-item  mt-2" [section]="section" [field]="section?.body?.details?.comment"
+        name="comment" [labelTextReadMode]="i18n.translate('comment')" [labelTextWriteMode]="i18n.translate('comment')"
+        [hasColumnBreak]="false" [label]="i18n.translate('comment')" [required]="false" [minLength]="'1'"
+        [maxLength]="'500'" [isReadOnly]="section?.header?.readOnly" (emitedValue)="handleEmitValue($event,'comment')"
+        [errorMessage]="i18n.translate('lenghtMin1Max200')">
+      </app-textarea>
+    </div>
+  </div>
+
+</form>
+
+
+<!--<div
+  [ngClass]="{'form-section-divide  form-section':!section?.['header']?.readOnly,'info-section':section?.['header']?.readOnly}">
+
+
+  <ds-button *ngIf="!section?.header?.readOnly" class="mt-4 mb-4" (click)="createSubRequest()">{{ i18n.translate('askForReview') }}</ds-button>
+
+
+</div>-->
+
+
+<!-- <mat-card class="example-card full " *ngIf="!section?.header?.readOnly">
+   <mat-card-header class="mx-0 py-3">
+     <mat-card-title>{{ i18n.translate('Raisereviewrequests') }}</mat-card-title>
+   </mat-card-header>
+   <mat-card-content>
+
+     <app-search-employee
+       class="section-item"
+       [section]="section"
+       [field]="section.body.details.employeeReview"
+       name="approverList"
+       [labelTextReadMode]="i18n.translate('employeeReview')"
+       [labelTextWriteMode]="i18n.translate('employeeReview')"
+       [hasColumnBreak]="false"
+       [label]="i18n.translate('approverList')"
+       [required]="true"
+       [isReadOnly]="section?.header?.readOnly"
+       (emitedValue)="handleEmitValue($event,'employeeReview')">
+     </app-search-employee>
+
+     <app-textarea
+       class="section-item"
+       [section]="section"
+       [field]="comments"
+       name="comment"
+       [labelTextReadMode]="i18n.translate('comment')"
+       [labelTextWriteMode]="i18n.translate('comment')"
+       [hasColumnBreak]="false"
+       [label]="i18n.translate('comment')"
+       [required]="true"
+       [minLength]="1"
+       [maxLength]="200"
+       [isReadOnly]="section?.header?.readOnly"
+       (emitedValue)="handleEmitValue($event,'rowcomment')"
+       [errorMessage]="i18n.translate('lenghtMin1Max200')">
+     </app-textarea>
+
+   </mat-card-content>
+   <mat-card-actions>
+     <ds-button [ngClass]="{'disabled':(!validcreateSubRequest() || profileRequestorService.isSubmitting['ask']) }" [loading]="profileRequestorService.isSubmitting['ask']"
+                (click)="createSubRequest()">{{ i18n.translate('sendForReview') }}
+     </ds-button>
+     &lt;!&ndash;[ngClass]="{'disabled':!validForm(item?.value)}"
+             (click)="onSubmit(item?.value) " [loading]="profileRequestorService.isSubmitting[item?.value]"&ndash;&gt;
+     &lt;!&ndash;      <button mat-button>ASK</button>&ndash;&gt;
+   </mat-card-actions>
+ </mat-card>-->
+
+
+<!--
+<app-attachment-section
+  class="section-item COL-6 "
+  [isSortable]="true"
+  [field]="section?.body?.details?.attachments"
+  [labelTextReadMode]=""
+  [labelTextWriteMode]=""
+  [hasColumnBreak]=""
+  [label]=""
+  [required]=""
+  [isReadOnly]="section?.header?.readOnly"
+  [attachments]="section?.body?.details?.attachments"
+  (emitedValue)="handleEmitValue($event,'attachments')">
+</app-attachment-section>
+
+<app-textarea
+  class="section-item  mt-2"
+  [section]="section"
+  [field]="section?.body?.details?.comment"
+  name="comment"
+  [labelTextReadMode]="i18n.translate('comment')"
+  [labelTextWriteMode]="i18n.translate('comment')"
+  [hasColumnBreak]="false"
+  [label]="i18n.translate('comment')"
+  [required]="false"
+  [minLength]="1"
+  [maxLength]="200"
+  [isReadOnly]="section?.header?.readOnly"
+  (emitedValue)="handleEmitValue($event,'comment')"
+  [errorMessage]="i18n.translate('lenghtMin1Max200')">
+</app-textarea>
+-->
+
+
+<div class="mt-4" *ngIf="!section?.header?.readOnly">
+
+  <div class="d-flex align-items-center gap-3" *ngIf="lov?.decision?.type === 'button'">
+    <ds-button shape="text" color="red" (click)="resetForm()">
+      <span class="fs-16 fw-medium">{{ i18n.translate('reset') }}</span>
+    </ds-button>
+    <div class="d-flex flex-wrap align-items-center flex-grow-1 flex-row-reverse gap-3">
+      <ng-container *ngFor="let item of lov?.decision?.options">
+        <ds-button
+          [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons || this.uploading}"
+          (click)="onSubmit(item?.value) " [loading]="profileRequestorService.isSubmitting[item?.value]"
+          *ngIf="item?.value === 'SUBMIT'">{{ item?.description }}
+        </ds-button>
+
+        <ds-button
+          [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons || this.uploading}"
+          (click)="askToContinue(item?.value,item?.description) "
+          [loading]="profileRequestorService.isSubmitting[item?.value]" *ngIf="item?.value === 'APPROVE'">{{
+          item?.description }}
+        </ds-button>
+        <ds-button
+          [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons || this.uploading}"
+          (click)="askToContinue(item?.value,item?.description)" shape="outline" color="red"
+          [loading]="profileRequestorService.isSubmitting[item?.value]" *ngIf="item?.value === 'REJECT'">
+          {{ item?.description }}
+        </ds-button>
+        <ds-button
+          [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons || this.uploading}"
+          (click)="onSubmit(item?.value)" shape="outline" color="red"
+          [loading]="profileRequestorService.isSubmitting[item?.value]" *ngIf="item?.value === 'CANCEL'">
+          {{ item?.description }}
+        </ds-button>
+        <ds-button
+          [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons || this.uploading}"
+          (click)="askToContinue(item?.value,item?.description)" shape="outline"
+          [loading]="profileRequestorService.isSubmitting[item?.value]" *ngIf="item?.value === 'SENDBACK'">
+          {{ item?.description }}
+        </ds-button>
+
+        <ds-button
+          [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons || this.uploading}"
+          (click)="onSubmit(item?.value) " [loading]="profileRequestorService.isSubmitting[item?.value]"
+          *ngIf="!(item?.value === 'SUBMIT' || item?.value === 'APPROVE' || item?.value === 'SENDBACK' || item?.value === 'REJECT' || item?.value === 'CANCEL')">
+          {{ item?.description }}
+        </ds-button>
+
+
+      </ng-container>
+      <!-- <ds-button [ngClass]="{'disabled':false}"
+      (click)="saveDraft()"
+       [loading]="profileRequestorService.isSubmitting[item?.value]"
+      >{{ i18n.translate('Save draft') }}
+    </ds-button> -->
+    </div>
+  </div>
+
+  <div class="d-flex flex-wrap align-items-center flex-grow-1 justify-content-end gap-3"
+    *ngIf="lov?.decision?.type !== 'button'">
+    <ds-button shape="text" color="red" (click)="resetForm()">
+      <span class="fs-16 fw-medium">{{ i18n.translate('reset') }}</span>
+    </ds-button>
+    <ds-button [ngClass]="{'disabled':!validForm('SUBMIT') || this.uploading}"
+      [loading]="profileRequestorService.isSubmitting[item?.value]"
+      (click)="onSubmit('SUBMIT') || profileRequestorService.disableButtons">
+      {{ i18n.translate('submit') }}
+    </ds-button>
+  </div>
+</div>

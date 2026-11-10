@@ -1,0 +1,106 @@
+<mat-sidenav-container>
+  <!-- [disableClose]="true" -->
+  <mat-sidenav disableClose  autoFocus="false" #sidenav fixedInViewport (closedStart)="onClose()">
+    <ng-container *ngComponentOutlet="sideContent"></ng-container>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="position-relative mb-5 pt-4">
+      <section
+        *ngIf="!isReady" class="service-wrapper"
+        [ngClass]="{'custom-container pt-4': form?.header?.status?.key != 'NEW'}">
+        <app-service-header
+          *ngIf="form?.header?.status?.key != 'NEW' " [form]="form" [isLoading]="true" [showCommentText]="true" [showFeedBack]="false"
+          [formTitle]="i18n.translate('formTitle')" [showFlagOptions]="showFlagOptions" [isValidLoad]="isValidLoad"
+          [creationDate]="creationDate">
+        </app-service-header>
+        <div class="workflow-loader position-relative">
+          <div class="loading-bg mb-3 p-4" *ngFor="let item of [1,2,3]"></div>
+        </div>
+      </section>
+      <section *ngIf="isReady && !isSuccessfullySubmitted">
+        <div
+          class="service-wrapper"
+          [ngClass]="form?.header?.status?.key == 'NEW' ? 'hub-container-mini' : 'hub-container'">
+          <ds-message
+            type="notAuthorized"
+            *ngIf="!isValidLoad && this.stateMachineService['successed'] == undefined && form?.messages?.error?.length && form?.header?.status?.key != 'NEW'">
+            <div class="d-flex gap-2" *ngFor="let message of form?.messages?.error">
+              <p class="mx-2 word-break" [innerHTML]="message"></p>
+            </div>
+          </ds-message>
+
+          <ds-alert class="my-3" type="danger" icon="close-circle" *ngIf="isValidLoad && form?.messages?.info?.length">
+            <div class="d-flex gap-2" *ngFor="let message of form?.messages?.info">
+              {{ message }}
+            </div>
+          </ds-alert>
+          <ds-alert
+            class="my-3" type="danger" icon="close-circle"
+            *ngIf="isValidLoad && form?.messages?.warning?.length">
+            <div class="d-flex gap-2" *ngFor="let message of form?.messages?.warning">
+              {{ message }}
+            </div>
+          </ds-alert>
+          <ds-alert class="my-3" type="danger" icon="close-circle" *ngIf="isValidLoad && form?.messages?.error?.length">
+            <div class="d-flex gap-2" *ngFor="let message of form?.messages?.error">
+              {{ message }}
+            </div>
+          </ds-alert>
+
+          <ng-container *ngIf="isValidLoad">
+            <div class="mobileStatus" *ngIf="isValidLoad && form?.header?.status?.key !== 'NEW'"></div>
+            <app-service-header
+              [form]="form" [showFlagOptions]="showFlagOptions" [section]="form?.sections['0']" [showCommentText]="true" [showFeedBack]="false"
+              [isValidLoad]="isValidLoad" [creationDate]="creationDate" [formTitle]="i18n.translate('formTitle')">
+              <app-print-section class="d-flex gap-2" *ngIf="stateMachineService.showPrint() && form?.header?.status?.key !== 'NEW'" [form]="form">
+              </app-print-section>
+              <!-- <ds-button customAction (click)="printPage()" square icon size="small" class="icon-btn-shadow">
+                 <ds-icon *ngIf="!downloadingFile" icon="download" class="fs-20 fs-md-17 fc-purple"></ds-icon>
+                 <span class="sfi sfi-spinner d-inline-block spin fc-coral" matSuffix *ngIf="downloadingFile"></span>
+               </ds-button>-->
+
+
+             <!-- <ds-button customAction
+                         class="icon-btn-shadow"
+                         size="small"
+                         (click)="generateEmail()"
+                         icon square>
+                <ds-icon *ngIf="!downloadingFiles" icon="mail-o" class="fc-purple fs-20"></ds-icon>
+                <span class="sfi sfi-spinner d-inline-block spin fc-coral" matSuffix *ngIf="downloadingFiles"></span>
+              </ds-button>-->
+
+            </app-service-header>
+
+            <!-- add print in new request -->
+            <div class="d-flex justify-content-end">
+              <app-print-section  class="d-flex gap-2" *ngIf="stateMachineService.showPrint() && form?.header?.status?.key == 'NEW'" [form]="form">
+              </app-print-section>
+
+               <!--<ds-button customAction
+                          class="icon-btn-shadow"
+                         size="small"
+                         (click)="generateEmail()"
+                         icon square>
+                <ds-icon *ngIf="!downloadingFiles" icon="mail-o" class="fc-purple fs-20"></ds-icon>
+                <span class="sfi sfi-spinner d-inline-block spin fc-coral" matSuffix *ngIf="downloadingFiles"></span>
+              </ds-button>-->
+            </div>
+
+            <app-hr-section
+              *ngIf="isValidLoad && isOnBehalfOfAuthorized() && !hrRequestIsSubmitted" [form]="form"
+              [sections]="sections" (hrSectionSubmitted)="onHrSubmit($event)"></app-hr-section>
+            <app-workflow-section
+              *ngIf="isValidLoad && (hrRequestIsSubmitted || !isOnBehalfOfAuthorized())"
+              [form]="form" (sectionSubmitted)="onSubmit($event)" [sectionsController]="sectionsController"
+              [sections]="sections" [segmentDynamicLoaderService]="segmentDynamicLoader">
+              <app-request-details-section
+                [section]=form.sections[0] [lov]="form?.lovs" className="form-section"
+                [isReadOnly]="form.sections[0].header.readOnly"></app-request-details-section>
+
+            </app-workflow-section>
+          </ng-container>
+        </div>
+      </section>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

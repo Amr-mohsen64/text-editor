@@ -1,0 +1,120 @@
+<div class="mt-2 p-0">
+  <div class="d-flex justify-content-between mb-1" *ngIf="hasLabel">
+    <span class="form-label mb-0">{{ label }}</span>
+  </div>
+
+  <div style="text-align-last: end;" *ngIf="!isReadOnly">
+    <span *ngIf="!required && !hideOption" class="fs-11 fc-dark-gray">
+      {{ i18n.translate('Optional') }}
+    </span>
+  </div>
+    <section *ngIf="!attachments?.length && !isReadOnly" [ngClass]="insideTable ? 'file-uploader-table' : 'file-uploader'" class=" mb-2"
+           [class.insideTableStyle]="insideTable" (click)="addAttahment(); $event.stopPropagation()">
+    <div [ngClass]="insideTable ? 'file-uploader-table-dev' : ''" class="file-uploader-input">
+      <div class="icon mb-1">
+        <svg [ngClass]="insideTable ? 'file-uploader-table-svg' : ''" width="41" height="38" viewBox="0 0 41 38"
+             fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M0 22.1947V20.6736C0.0971303 20.1019 0.070094 19.5141 0.276371 18.9533C1.28372 16.2086 3.21231 14.5023 6.0421 13.8094C6.70499 13.6472 6.68497 13.6632 6.69899 12.9843C6.73203 11.3321 6.99839 9.71992 7.62423 8.17986C8.86289 5.13678 10.9467 2.83969 13.8816 1.39175C17.168 -0.230424 20.5956 -0.450719 24.0553 0.81598C27.4929 2.07467 29.9622 4.41581 31.4802 7.74828C31.7786 8.40316 32.027 9.08307 32.1712 9.79202C32.2402 10.1315 32.4035 10.2566 32.7529 10.3107C36.7012 10.9165 39.3358 13.1255 40.6946 16.8735C40.9069 17.4603 40.9199 18.0731 40.9599 18.6829C40.9649 18.7601 40.9389 18.8442 41 18.9113V20.5124C40.9109 20.995 40.969 21.4937 40.8608 21.9734C40.5244 23.4614 39.8454 24.7821 38.8501 25.9297C37.4522 27.5418 35.7059 28.5882 33.6161 29.0519C32.791 29.2351 31.9499 29.2521 31.1117 29.2922C30.6571 29.3142 30.584 29.193 30.592 28.7484C30.6451 25.8446 29.802 23.2571 27.8624 21.0591C25.9979 18.9463 23.6597 17.7167 20.867 17.4012C18.8553 17.1739 16.9057 17.4593 15.0612 18.3395C11.8319 19.8816 9.81416 22.4069 8.96102 25.8696C8.74273 26.7538 8.68265 27.658 8.70568 28.5702C8.7217 29.2111 8.60254 29.3122 7.95968 29.2972C5.95098 29.2511 4.10551 28.7234 2.58146 27.3596C1.07644 26.0168 0.0680913 24.3996 0.0400537 22.3028C0.0400537 22.2607 0.0250336 22.2257 0 22.1937V22.1947Z"
+            fill="#DEE0E2" />
+          <path
+            d="M29.0303 28.2632C29.0604 33.4031 24.8657 37.6187 19.6838 37.6548C14.5169 37.6908 10.2852 33.4952 10.2521 28.3042C10.2201 23.1403 14.4297 18.9126 19.6227 18.8946C24.8037 18.8766 28.9993 23.0542 29.0303 28.2632Z"
+            fill="#8E9AA0" />
+          <path
+            d="M20.5573 25.2644C20.4622 25.4477 20.5012 25.5939 20.5012 25.734C20.4982 28.2154 20.5002 30.6957 20.4982 33.177C20.4982 33.8099 20.2339 34.1704 19.7462 34.2234C19.2645 34.2765 18.88 33.9831 18.8169 33.5025C18.7959 33.3443 18.7969 33.183 18.7969 33.0238C18.7959 30.5826 18.7969 28.1423 18.7969 25.701C18.7969 25.5728 18.7969 25.4447 18.7969 25.2003C18.1971 25.8031 17.6774 26.3288 17.1527 26.8505C17.0115 26.9907 16.8683 27.1349 16.7061 27.2471C16.3566 27.4864 15.9341 27.4413 15.6457 27.154C15.3643 26.8746 15.3203 26.442 15.5486 26.0925C15.6207 25.9824 15.7128 25.8832 15.8069 25.7891C16.8613 24.7307 17.9167 23.6733 18.9732 22.6179C19.4017 22.1893 19.8784 22.1763 20.3039 22.5988C21.3914 23.6803 22.4739 24.7667 23.5533 25.8572C23.9809 26.2898 24.0129 26.8065 23.6534 27.167C23.299 27.5214 22.7753 27.4844 22.3437 27.0568C21.7499 26.47 21.1661 25.8732 20.5603 25.2644H20.5573Z"
+            fill="#F9F9F9" />
+        </svg>
+      </div>
+      <div class="f-14 fc-black fw-normal">
+        <span class="fc-coral fw-medium">{{ i18n.translate('browse') }}</span>
+      </div>
+      <div class="fs-10 fc-dark-gray">
+       {{ i18n.translate('addMultiAttachments') }}
+      </div>
+    </div>
+  </section>
+
+<!--  <ds-message class="full" *ngIf="!attachments?.length && !isReadOnly" label="{{i18n.translate('NoAttachments')}}"></ds-message>-->
+  <div class="table-responsive full" *ngIf="attachments?.length " cdkDropList
+       [cdkDropListData]="attachments"
+       (cdkDropListDropped)="drop($event)">
+    <table>
+      <thead>
+      <tr>
+        <th *ngIf="downloadAll">
+          <ds-button square icon size="small" (click)="downloadAllAttachments($event)" class="icon-btn-shadow">
+            <ds-icon icon="download" class="fs-20 fs-md-17 fc-purple"></ds-icon>
+          </ds-button>
+          <a #placeholder></a>
+        </th>
+        <th class="w-25">{{ i18n.translate('FileName') }}</th>
+        <th class="w-25">{{ i18n.translate('FileDescription') }}</th>
+        <th class="w-25">{{ i18n.translate('comment') }}</th>
+        <th class="w-25" *ngIf="!isReadOnly"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of attachments; index as i" cdkDrag [cdkDragDisabled]="(attachments?.length ==0 ) || (!isSortable && !isReadOnly )">
+        <td *ngIf="downloadAll"> {{ (i + 1) }}</td>
+        <td>
+          <app-file-uploader [allowedExtensions]="allowedExtensions" class="white-attached" [field]="data" name="attachment" [hasLabel]="false"
+                             [showActions]="true" [isReadOnly]="true">
+          </app-file-uploader>
+        </td>
+        <td class="maxWidth px-2">
+          <a class="fw-medium fc-black underline cursor-pointer fs-12" [hidden]="!data?.fileDescription"
+             (click)="$event.stopPropagation();fileDescriptionAnchor.popover.open()" satPopoverAnchor
+             #fileDescriptionAnchor="satPopoverAnchor" [matTooltip]="data?.fileDescription">
+            {{ data?.fileDescription | slice:0:15 }}
+            <span *ngIf="data?.fileDescription?.length > 15">....</span>
+          </a>
+          <sat-popover #fileDescriptionPopover [anchor]="fileDescriptionAnchor" [hasBackdrop]="true"
+                       [restoreFocus]="false" verticalAlign="below" horizontalAlign="center">
+            <div class="default-popover p-3 fs-14 text-break view-note-popover">
+              <bdi class="fc-black">
+                {{ data?.fileDescription }}
+              </bdi>
+            </div>
+          </sat-popover>
+        </td>
+        <td class="maxWidth px-2">
+          <a class="fw-medium fc-black underline cursor-pointer fs-12" [hidden]="!data?.attachmentcomment"
+             (click)="$event.stopPropagation();commentsAnchor.popover.open()" satPopoverAnchor
+             [matTooltip]="data?.attachmentcomment"
+             #commentsAnchor="satPopoverAnchor"> {{ data?.attachmentcomment | slice:0:15 }}
+             <span *ngIf="data?.attachmentcomment?.length > 15">....</span>
+          </a>
+          <sat-popover #commentsPopover [anchor]="commentsAnchor" [hasBackdrop]="true" [restoreFocus]="false"
+                       verticalAlign="below" horizontalAlign="center">
+            <div class="default-popover p-3 fs-14 text-break view-note-popover">
+              <bdi class="fc-black">
+                {{ data?.attachmentcomment }}
+              </bdi>
+            </div>
+          </sat-popover>
+        </td>
+        <td *ngIf="!isReadOnly">
+          <div class="d-flex">
+
+            <ds-button square icon size="small" (click)="deleteAttachments(i,data)" class="icon-btn-shadow">
+              <ds-icon icon="trash" class="fs-20 fs-md-17 fc-red"></ds-icon>
+            </ds-button>
+
+            <ds-button square icon size="small" (click)="editRow(data,i)" class="icon-btn-shadow">
+              <ds-icon icon="pen" class="fs-20 fs-md-17 fc-purple"></ds-icon>
+            </ds-button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="text-center full mt-3" *ngIf="!isReadOnly && attachments?.length  && attachments?.length < attachmentsMax">
+    <ds-button shape="{{attachments?.length ? 'outline' : ''}}" [ngClass]="{'full-add-btn w-100': attachments?.length}"
+               (click)="addAttahment(); $event.stopPropagation()">
+      <ds-icon slot="prefix" icon="plus" class="fs-22"></ds-icon>
+      {{ i18n.translate('addAttachments') }}
+    </ds-button>
+  </div>
+
+</div>

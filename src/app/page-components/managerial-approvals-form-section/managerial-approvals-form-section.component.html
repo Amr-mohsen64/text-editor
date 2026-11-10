@@ -1,0 +1,89 @@
+<div [ngClass]="{'form-section':!section?.header?.readOnly,'info-section':section?.header?.readOnly}">
+  <!-- <app-datepicker
+    *ngIf="section?.header?.processingDate"
+    class="section-item full"
+    [section]="section"
+    [field]="section?.body?.processingDate"
+    name="processingDate"
+    [labelTextReadMode]="i18n.translate('processingDate')"
+    [labelTextWriteMode]="i18n.translate('processingDate')"
+    [hasColumnBreak]="false"
+    [label]="i18n.translate('processingDate')"
+
+    [required]="false"
+    [isReadOnly]="true"
+    (emitedValue)="handleEmitValue($event,'processingDate')">
+  </app-datepicker> -->
+
+  <!--            [hint]="i18n.translate('enterLenghtMin25')"-->
+
+  <!-- <app-input class="section-item full" [section]="section" [field]="section?.body?.details?.authority?.value"
+    name="authority " [labelTextReadMode]="i18n.translate('decision')" [labelTextWriteMode]="i18n.translate('decision')"
+    [hasColumnBreak]="false" [label]="i18n.translate('decision')" [required]="true" [isReadOnly]="true"
+    (emitedValue)="handleEmitValue($event,'authority')">
+  </app-input> -->
+  <app-textarea class="section-item" [section]="section" [field]="section?.body?.details?.comment" name="comment"
+    [labelTextReadMode]="i18n.translate('comment')" [labelTextWriteMode]="i18n.translate('comment')"
+    [hasColumnBreak]="false" [label]="i18n.translate('comment')" [required]="true" [minLength]="1" [maxLength]="500"
+    [isReadOnly]="section?.header?.readOnly" (emitedValue)="handleEmitValue($event,'comment')"
+    [errorMessage]="i18n.translate('lenghtMin1Max200')">
+  </app-textarea>
+
+
+</div>
+
+
+<div class="mt-4" *ngIf="!section?.header?.readOnly">
+
+  <div class="d-flex align-items-center gap-3" *ngIf="lov?.decision?.type === 'button'">
+    <ds-button shape="text" color="red" (click)="resetForm()">
+      <span class="fs-16 fw-medium">{{ i18n.translate('reset') }}</span>
+    </ds-button>
+    <div class="d-flex flex-wrap align-items-center flex-grow-1 flex-row-reverse gap-3">
+      <ng-container *ngFor="let item of lov?.decision?.options">
+        <ds-button [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons}"
+          (click)="onSubmit(item?.value) " [loading]="profileRequestorService.isSubmitting[item?.value]"
+          *ngIf="item?.value === 'SUBMIT'">{{ item?.description }}
+        </ds-button>
+
+        <ds-button [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons}"
+          (click)="onSubmit(item?.value) " [loading]="profileRequestorService.isSubmitting[item?.value]"
+          *ngIf="item?.value === 'APPROVE'">{{ item?.description }}
+        </ds-button>
+        <ds-button [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons}"
+          (click)="onSubmit(item?.value)" shape="outline" color="red"
+          [loading]="profileRequestorService.isSubmitting[item?.value]" *ngIf="item?.value === 'REJECT'">
+          {{ item?.description }}
+        </ds-button>
+        <ds-button [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons}"
+          (click)="onSubmit(item?.value)" shape="outline" color="red"
+          [loading]="profileRequestorService.isSubmitting[item?.value]" *ngIf="item?.value === 'CANCEL'">
+          {{ item?.description }}
+        </ds-button>
+        <ds-button [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons}"
+          (click)="onSubmit(item?.value)" shape="outline" [loading]="profileRequestorService.isSubmitting[item?.value]"
+          *ngIf="item?.value === 'SENDBACK'">
+          {{ item?.description }}
+        </ds-button>
+
+        <ds-button [ngClass]="{'disabled':!validForm(item?.value) || profileRequestorService.disableButtons}"
+          (click)="onSubmit(item?.value) " [loading]="profileRequestorService.isSubmitting[item?.value]"
+          *ngIf="!(item?.value === 'SUBMIT' || item?.value === 'APPROVE' || item?.value === 'SENDBACK' || item?.value === 'REJECT' || item?.value === 'CANCEL')">{{
+          item?.description }}
+        </ds-button>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="d-flex flex-wrap align-items-center flex-grow-1 justify-content-end gap-3"
+    *ngIf="lov?.decision?.type !== 'button'">
+    <ds-button shape="text" color="red" (click)="resetForm()">
+      <span class="fs-16 fw-medium">{{ i18n.translate('reset') }}</span>
+    </ds-button>
+    <ds-button [ngClass]="{'disabled':!validForm('SUBMIT')}"
+      [loading]="profileRequestorService.isSubmitting[item?.value]"
+      (click)="onSubmit('SUBMIT') || profileRequestorService.disableButtons">
+      {{ i18n.translate('submit') }}
+    </ds-button>
+  </div>
+</div>

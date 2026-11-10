@@ -1,0 +1,10 @@
+::ng-deep {
+  .main-popup.reminder-dialog {
+    --popup-max-width: 95%;
+    --popup-width: 1000px;
+
+    .mat-dialog-title ds-button::part(base) {
+      --btn-width: auto;
+    }
+  }
+}

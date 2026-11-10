@@ -1,0 +1,29 @@
+<div class="popup-container">
+  <div class="d-flex align-items-center justify-content-between" mat-dialog-title>
+    <h3 class="mb-0 font-16 fw-medium">{{ i18n.translate('serviceAgreement') }}</h3>
+    <!--    <ds-button matDialogClose icon>
+          <ds-icon icon="close" class="fs-20 fc-black"></ds-icon>
+        </ds-button>-->
+  </div>
+  <mat-dialog-content>
+    <div class="px-md-4">
+      <ng-container>
+        <p class="fs-15 fw-normal bg-color-light-gray text-break"> {{ i18n.translate('term0') }} </p>
+        <p class="fs-15 fw-normal bg-color-light-gray text-break"> {{ i18n.translate('term1') }} </p>
+        <p class="fs-15 fw-normal bg-color-light-gray text-break"> {{ i18n.translate('term2') }} </p>
+        <p class="fs-15 fw-normal bg-color-light-gray text-break"> {{ i18n.translate('term3') }} </p>
+        <p class="fs-15 fw-normal bg-color-light-gray text-break"> {{ i18n.translate('term4') }} </p>
+        <p class="fs-15 fw-normal bg-color-light-gray text-break"> {{ i18n.translate('term5') }} </p>
+        <p class="fs-15 fw-normal bg-color-light-gray text-break"> {{ i18n.translate('term6') }} </p>
+      </ng-container>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="default-footer justify-content-end gap-3">
+    <ds-button shape="outline" (click)="close()" color="red">{{ i18n.translate('disAgree') }}
+    </ds-button>
+    <ds-button (click)="agree()">
+      <span>{{ i18n.translate('agree') }}</span>
+    </ds-button>
+  </mat-dialog-actions>
+</div>

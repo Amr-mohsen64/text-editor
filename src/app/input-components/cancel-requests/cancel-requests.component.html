@@ -1,0 +1,48 @@
+<div class="popup-container">
+  <div class="d-flex align-items-center justify-content-end" mat-dialog-title>
+    <h3 class="mb-0 font-16 fw-medium">{{ i18n.translate('cancelRequests') }}</h3>
+    <ds-button (click)="close()" icon>
+      <ds-icon icon="close" class="fs-20 fc-black"></ds-icon>
+    </ds-button>
+  </div>
+  <mat-dialog-content>
+
+    <ds-alert class="my-3" type="danger" icon="close-circle" *ngIf="errorMessages?.length">
+      <div class="d-flex gap-2" *ngFor="let message of errorMessages">
+        {{ message }}
+      </div>
+    </ds-alert>
+
+
+    <div class="px-md-4 mt-3">
+      <app-textarea
+        class="section-item"
+        [section]="section"
+        [field]="comments"
+        name="comment"
+        [labelTextReadMode]="i18n.translate('comment')"
+        [labelTextWriteMode]="i18n.translate('comment')"
+        [hasColumnBreak]="false"
+        [label]="i18n.translate('comment')"
+        [required]="true"
+        [minLength]="'1'"
+        [maxLength]="'200'"
+        [isReadOnly]="section?.header?.readOnly"
+        (emitedValue)="handleEmitValue($event,'rowcomment')"
+        [errorMessage]="i18n.translate('lenghtMin1Max200')">
+      </app-textarea>
+
+
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="default-footer justify-content-end gap-3">
+    <ds-button shape="outline" (click)="close()" [disabled]="(profileRequestorService.isSubmitting['ask'])" color="red">
+      {{ i18n.translate('discard') }}
+    </ds-button>
+    <ds-button [ngClass]="{'disabled':(!validcreateSubRequest() || profileRequestorService.isSubmitting['ask']) }"
+               [loading]="profileRequestorService.isSubmitting['ask']"
+               (click)="createSubRequest()">{{ i18n.translate('CancelConsultation') }}
+    </ds-button>
+  </mat-dialog-actions>
+
+</div>

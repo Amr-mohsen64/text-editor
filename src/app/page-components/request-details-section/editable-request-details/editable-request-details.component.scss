@@ -1,0 +1,50 @@
+::ng-deep .form__field-item--request-title input {
+    position: relative;
+    z-index: 1;
+}
+
+.large-spinner{
+    font-size: 35px !important;
+}
+
+::ng-deep .note-popover {
+  .note-content {
+    padding: 16px;
+    color: var(--black);
+    background-color: rgb(255 252 236);
+    border: 1px solid rgb(255 221 64);
+    font-size: 13px;
+    line-height: 1.4;
+
+    .note-title {
+      margin: 0 0 12px 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--black);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .note-list {
+      margin: 0;
+      padding-left: 18px;
+      list-style-type: disc;
+
+      li {
+        margin-bottom: 6px;
+        color: var(--black);
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.form__wrapper{
+  .mto-1{
+    margin-top: -10px;
+  }
+}
